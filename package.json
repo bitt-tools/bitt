@@ -1,0 +1,14 @@
+{
+  "name": "bitt",
+  "version": "0.1.0",
+  "description": "An extremely light zero dependency runtime javascript framework.",
+  "main": "bitt.js",
+  "repository": "https://github.com/Andr3wRiv3rs/bitt",
+  "module": "true",
+  "author": {
+    "name": "Andres Sweeney-Rios",
+    "email": "andrewarivers@gmail.com",
+    "url": "https://poisonapple.dev"
+  },
+  "license": "MIT"
+}
