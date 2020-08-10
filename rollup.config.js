@@ -1,4 +1,3 @@
-const localResolve = require('rollup-plugin-local-resolve')
 const { terser } = require('rollup-plugin-terser')
 
 module.exports = {
@@ -6,15 +5,14 @@ module.exports = {
   
   output: {
     file: process.env.format === 'esm' 
-      ? `./dist/bitt-esm.js`
-      : `./dist/bitt.js`,
+      ? `./dist/esm.js`
+      : `./dist/cjs.js`,
 
     name: 'bitt',
     preferConst: true,
   },
 
   plugins: [
-    localResolve(),
     terser(),
   ]
 }

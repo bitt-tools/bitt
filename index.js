@@ -1,2 +1,2 @@
-export * from './lib'
-export * from './components'
+export * from './lib/index.js'
+export * from './components/index.js'
