@@ -26,6 +26,8 @@ Bitt is an extremely lightweight (~4kb) zero dependency reactive JavaScript fram
   - [syntax](#syntax)  
   - [mount](#mount)
   - [router](#router)  
+    - [link](#link)  
+    - [goto](#goto)  
 
 
 
@@ -191,7 +193,7 @@ If you would like to use URL hashes rather than the history API, you may provide
 router(document.body, routes, { mode: 'hash' }).catch(console.error)
 ```
 
-## link
+#### link
 The `link` component will generate an anchor with the provided attributes and children. This will trigger a change in the router without causing the browser to reload the page.
 ```js
 import { link } from 'bitt'
@@ -204,7 +206,7 @@ You may choose to specify only a string in place of attributes for convenience.
 const Component = link("/home", 'click me!')
 ```
 
-## goto
+#### goto
 The `goto` function allows you to navigate programmatically.
 ```js
 import { goto } from 'bitt'
