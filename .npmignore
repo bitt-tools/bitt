@@ -1,4 +1,7 @@
-dist
+components
+lib
+web
+index.js
 node_modules
 .gitignore
 yarn.lock
