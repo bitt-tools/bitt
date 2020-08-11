@@ -198,7 +198,8 @@ The `link` component will generate an anchor with the provided attributes and ch
 ```js
 import { link } from 'bitt'
 
-const Component = link({ href: "/home" }, 'click me!') // <a href="/home">click me!</a>
+const Component = link({ href: "/home" }, 'click me!') 
+// <a href="/home">click me!</a>
 ```
 
 You may choose to specify only a string in place of attributes for convenience.
