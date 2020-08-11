@@ -13,7 +13,8 @@
   "type": "module",
   "scripts": {
     "dist": "rollup -c",
-    "dev": "rollup -c -w --sourcemap"
+    "dev": "rollup -c -w --sourcemap",
+    "lint": "eslint --fix"
   },
   "exports": {
     ".": "./dist/bitt.min.js",
@@ -21,6 +22,8 @@
   },
   "license": "MIT",
   "devDependencies": {
+    "babel-eslint": "^10.1.0",
+    "eslint": "^7.6.0",
     "rollup": "^2.23.1",
     "rollup-plugin-terser": "^7.0.0"
   }
