@@ -1,8 +1,8 @@
 {
   "name": "bitt",
-  "version": "0.1.6b",
-  "description": "An extremely light zero dependency runtime javascript framework.",
-  "main": "dist/bitt.min.js",
+  "version": "0.1.6c",
+  "description": "An extremely lightweight zero dependency JavaScript framework. ",
+  "main": "index",
   "repository": "https://github.com/Andr3wRiv3rs/bitt",
   "module": "true",
   "author": {
@@ -12,7 +12,12 @@
   },
   "type": "module",
   "scripts": {
-    "dist": "rollup -c"
+    "dist": "rollup -c",
+    "dev": "rollup -c -w --sourcemap"
+  },
+  "exports": {
+    ".": "./dist/bitt.min.js",
+    "./dev": "./index.js"
   },
   "license": "MIT",
   "devDependencies": {

@@ -1,6 +1,5 @@
 export { normalizeComponent } from './lib/normalize.js'
-export { processComponent } from './lib/process.js'
-export { hookProps, hookCachedProps } from './lib/props.js'
+export { hookProps } from './lib/props.js'
 export { render } from './lib/render.js'
 export { mount } from './lib/mount.js'
 export { router } from './lib/router.js'
