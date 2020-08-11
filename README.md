@@ -1,4 +1,4 @@
-# bitt
+# [bitt](https://www.npmjs.com/package/bitt)
 Bitt is an extremely lightweight (~4kb) zero dependency reactive JavaScript framework. It's built for vanilla code, which means it can be loaded anywhere without a compiler. 
 
 ## Features
