@@ -1,5 +1,4 @@
 # bitt
-## What is Bitt?
 Bitt is an extremely lightweight (~4kb) zero dependency reactive JavaScript framework. It's built for vanilla code, which means it can be loaded anywhere without a compiler. 
 
 ## Features
@@ -95,9 +94,14 @@ There are several ways to write your components, each with their own use case. T
 ```ts
 const Component = [nodeName = '', attributes? = {}, children? = []]
 ```
-They can also be a simple string or number to make it easy to append text. Attributes and children are optional, and you may define children as the second argument skipping attributes.
+They can also be a simple string or number to make it easy to append text. Attributes and children are optional, and you may define children as the second argument, skipping attributes.
 
-You may also find yourself needing to use a function. To do this, simply return your component and pass the function in place of the component:
+Any attribute can be defined in the attributes object.
+```js
+const Component = ['span', { class: 'bold' }, 'bold text!!!']
+```
+
+You may also find yourself needing to use a function in your component. To do this, simply return your component and pass the function in place of the component.
 ```js
 const Component = () => {
   const sum = 2 + 3
@@ -105,7 +109,7 @@ const Component = () => {
   return ['p', sum]
 }
 ```
-However, because the function is called on every rerender, instantiating can become tough. To fix that, all you need is a state:
+However, because the function is called on every rerender, instantiating can become tough. To fix that, all you need is a state.
 ```js
 const Component = ({ newState }) => {
   const state = newState({
@@ -115,8 +119,9 @@ const Component = ({ newState }) => {
   return ['p', state.sandwiches]
 }
 ```
+The state is reactive, and your component will reflect changes to it.
 
-Event listeners can be added with the `onEvent` syntax:
+Event listeners can be added with the `onEvent` syntax. They're placed alongside attributes.
 ```js
 const Component = ({ newState }) => {
   const state = newState({
@@ -129,11 +134,11 @@ const Component = ({ newState }) => {
 }
 ```
 
-There are a few special events that can be helpful in some cases:
+There are a few special events that can be helpful in certain cases:
 - `onMount` is called once the component has been mounted. This is only executed once after render.
 - `onUnmount` is called once the component has been unmounted. This helps with cleanup, and is also only executed once.
 
-Unparented sibling components can be written by wrapping your component twice:
+Unparented sibling components can be written by wrapping your component twice.
 ```js
 // all of these are valid components, try them out to see how they work
 const Component = [[
@@ -184,4 +189,27 @@ Note that this requires support for dynamic imports.
 If you would like to use URL hashes rather than the history API, you may provide an options object with the `mode` property set to `"hash"`.
 ```js
 router(document.body, routes, { mode: 'hash' }).catch(console.error)
+```
+
+## link
+The `link` component will generate an anchor with the provided attributes and children. This will trigger a change in the router without causing the browser to reload the page.
+```js
+import { link } from 'bitt'
+
+const Component = link({ href: "/home" }, 'click me!') // <a href="/home">click me!</a>
+```
+
+You may choose to specify only a string in place of attributes for convenience.
+```js
+const Component = link("/home", 'click me!')
+```
+
+## goto
+The `goto` function allows you to navigate programmatically.
+```js
+import { goto } from 'bitt'
+
+const Component = ['div', {
+  onClick: () => goto('/home')
+}]
 ```
