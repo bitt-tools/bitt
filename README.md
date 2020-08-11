@@ -94,14 +94,21 @@ Bitt will work right out of the box on the CDN.
 ### syntax
 There are several ways to write your components, each with their own use case. They're typically written like this:
 ```ts
-const Component = [nodeName = '', attributes? = {}, children? = []]
+const Component = [nodeName = '', attributes? = {}, children? = [] || '']
 ```
-They can also be a simple string or number to make it easy to append text. Attributes and children are optional, and you may define children as the second argument, skipping attributes.
+Attributes and children are optional, and you may define children as the second argument, skipping attributes.
 
-Any attribute can be defined in the attributes object.
+These can be written like this, with the `children` argument being either text or an array of components/text.  
 ```js
-const Component = ['span', { class: 'bold' }, 'bold text!!!']
+// any attribute can be defined in the attributes object
+const Component = ['span', { 
+  class: 'bold' 
+}, [
+  'bold text!!!',
+  ['em', 'emphasized text!!!']
+]]
 ```
+Numbers and booleans will be converted to text nodes as well.
 
 You may also find yourself needing to use a function in your component. To do this, simply return your component and pass the function in place of the component.
 ```js
@@ -109,16 +116,18 @@ const Component = () => {
   const sum = 2 + 3
 
   return ['p', sum]
+  // <p>5</p>
 }
 ```
 However, because the function is called on every rerender, instantiating can become tough. To fix that, all you need is a state.
 ```js
 const Component = ({ newState }) => {
   const state = newState({
-    sandwiches: 4
+    hasSandwiches: true
   })
 
-  return ['p', state.sandwiches]
+  return ['p', state.hasSandwiches ? "you have sandwiches!" : "you don't have any sandwiches :(" ]
+  // <p>you have sandwiches!</p>
 }
 ```
 The state is reactive, and your component will reflect changes to it.
@@ -133,6 +142,8 @@ const Component = ({ newState }) => {
   return ['p', {
     onClick: () => state.sandwiches++
   }, state.sandwiches]
+  // <p>4</p>
+  // *click* <p>5</p>
 }
 ```
 
@@ -140,16 +151,48 @@ There are a few special events that can be helpful in certain cases:
 - `onMount` is called once the component has been mounted. This is only executed once after render.
 - `onUnmount` is called once the component has been unmounted. This helps with cleanup, and is also only executed once.
 
+Conditionally rendered reactive components can accomplished by passing an object with a key. These keys can be any arbitrary string, but **they must be unique.** 
+```js
+const Component = ({ newState }) => {
+  const state = newState({
+    isLoggedIn: false,
+    username: 'apple',
+  })
+
+  return state.isLoggedIn 
+    ? { key: 'denied', component: ['h3', 'please log in'] }
+    : { key: 'welcome', component: ['h3', `welcome, ${state.username}!`] }
+}
+```
+You can also use the key helper if you prefer.
+```js
+import { key } from 'bitt'
+...
+const Component = ({ newState }) => {
+  const state = newState({
+    isLoggedIn: false,
+    username: 'apple',
+  })
+
+  return state.isLoggedIn 
+    ? key('denied', ['h3', 'please log in'])
+    : key('welcome', ['h3', `welcome, ${state.username}!`])
+}
+```
+
 Unparented sibling components can be written by wrapping your component twice.
 ```js
-// all of these are valid components, try them out to see how they work
+// all of these are valid components types
 const Component = [[
-  ['h1', 'hello world!'],
-  ['br'],
-  () => 'i am coding!',
-  'mic check 1 2 3',
+  ['h1', 'hello world!'], ['br'], () => 'i am coding!\n',
+  'mic check ', 1, 2, 3, '\n'
   'this is normal ', ['b' 'this is bold'],
 ]] 
+/*
+  <h1>hello world!</h1><br>i am coding!
+  mic check 123
+  this is normal <b>this is bold</b>
+*/
 ```
 
 
