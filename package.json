@@ -2,7 +2,7 @@
   "name": "bitt",
   "version": "0.1.5",
   "description": "An extremely light zero dependency runtime javascript framework.",
-  "main": "dist/bitt.js",
+  "main": "index.js",
   "repository": "https://github.com/Andr3wRiv3rs/bitt",
   "module": "true",
   "author": {
@@ -12,13 +12,7 @@
   },
   "type": "module",
   "scripts": {
-    "dist": "rollup -c --environment format:esm && rollup -c --format cjs --environment format:cjs"
-  },
-  "exports": {
-    ".": {
-      "require": "./dist/cjs.js",
-      "default": "./dist/esm.js"
-    }
+    "dist": "rollup -c"
   },
   "license": "MIT",
   "devDependencies": {

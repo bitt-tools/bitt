@@ -1,4 +1,4 @@
-import { goto } from '../lib/router'
+import { goto } from '../lib/router.js'
 
 export const link = (options, children) => {
   const attributes =  typeof options === 'string' ? { href: options } : options
