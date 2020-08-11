@@ -167,7 +167,7 @@ const Component = ({ newState }) => {
 You can also use the key helper if you prefer.
 ```js
 import { key } from 'bitt'
-...
+
 const Component = ({ newState }) => {
   const state = newState({
     isLoggedIn: false,
