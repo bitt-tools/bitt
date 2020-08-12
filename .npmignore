@@ -4,5 +4,7 @@ web
 index.js
 node_modules
 .gitignore
+.npmignore
 yarn.lock
 rollup.config.js
+.eslintrc.js
