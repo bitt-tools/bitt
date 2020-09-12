@@ -1,6 +1,6 @@
 {
   "name": "bitt",
-  "version": "0.1.9",
+  "version": "0.2.0",
   "description": "An extremely lightweight zero dependency JavaScript framework.",
   "main": "dist/bitt.min.js",
   "repository": "https://github.com/Andr3wRiv3rs/bitt",
