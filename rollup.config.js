@@ -1,4 +1,5 @@
 const { terser } = require('rollup-plugin-terser')
+const typescript = require('@rollup/plugin-typescript')
 
 module.exports = {
   input: './index.js',
@@ -11,5 +12,6 @@ module.exports = {
 
   plugins: [
     terser(),
+    typescript(),
   ]
 }
