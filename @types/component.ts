@@ -15,11 +15,10 @@ export type ComponentInput =
   | boolean 
   | ((component: Component) => ComponentInput) 
   | KeyedComponentInput
-  | [
-      string, 
-      ComponentInput[] | ComponentProps | string | number | boolean | undefined, 
-      ComponentInput[] | string | number | boolean | undefined
-    ]
+  | [string]
+  | [string, ComponentInput[] | string | number | boolean]
+  | [string, ComponentProps]
+  | [string, ComponentProps, ComponentInput[] | string | number | boolean]
 
 export interface Component <State extends Record<string, unknown> = {}> {
   input: ComponentInput
