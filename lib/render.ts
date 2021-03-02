@@ -1,19 +1,21 @@
 import { normalizeComponent } from './normalize.js'
 import { hookProps } from './props.js'
+import { Component, ComponentInput, RenderResult } from '../@types'
 
-export const render = (input) => {
+export const render = (input: ComponentInput): RenderResult => {
   if (input === undefined) throw Error('No component provided.')
   
-  if (Array.isArray(input[0])) return input[0].map(render)
+  if (Array.isArray(input) && Array.isArray(input[0])) return input[0].map(render)
 
-  const component = {
+  const component: Component = {
     input,
+
+    tagName: undefined,
+    key: undefined,
 
     props: {},
     cachedProps: {},
 
-    style: {},
-    
     children: [],
     renderedChildren: [],
     nodeChildren: [],
@@ -25,9 +27,8 @@ export const render = (input) => {
       active: [],
     },
 
-    state: null,
-
-    node: null,
+    state: undefined,
+    node: undefined,
 
     newState (object = {}) {
       if (component.state === null) {
@@ -35,10 +36,13 @@ export const render = (input) => {
 
         component.state = new Proxy(object, {
           get (target, prop) {
+            // FIXME: work around this
+            // @ts-ignore
             return target[prop]
           },
       
           set (target, prop, value) {
+            // @ts-ignore
             target[prop] = value
 
             if (!rerenderInProgress){ 
@@ -54,7 +58,7 @@ export const render = (input) => {
         })
       }
 
-      return component.state
+      return component.state!
     },
 
     render () {
@@ -69,27 +73,33 @@ export const render = (input) => {
       if (text) {
         if (!component.node) component.node = document.createTextNode('')
 
-        component.node.textContent = text
+        component.node.textContent = String(text)
       } else {
-        if (!component.node) component.node = document.createElement(component.tagName)
+        if (!component.node) component.node = document.createElement(component.tagName as string)
 
         hookProps(component)
       }
 
-      for (const { key, index, input } of component.children) {
+      if (!(component.node instanceof Element)) return
+
+      for (const { key: _key, index: _index, input } of component.children) {
+        const index = _index as number
+        const key = _key as number
+
         if (component.renderedChildren[key] === undefined) {
-          const renderedChild = render(input)
+          // TODO: ensure the renderedChild is of type Component
+          const renderedChild = render(input) as Component
           renderedChild.index = index
 
           component.renderedChildren[key] = renderedChild
 
           if (component.nodeChildren[index] && index < component.nodeChildren.length - 1) {
             component.node.insertBefore(
-              renderedChild.node,
-              component.nodeChildren[index].node,
+              renderedChild.node!,
+              component.nodeChildren[index].node!,
             )
           } else {
-            component.node.append(renderedChild.node)
+            component.node.append(renderedChild.node!)
           }
 
           component.nodeChildren[index] = renderedChild
@@ -101,7 +111,7 @@ export const render = (input) => {
 
       for (const key in component.renderedChildren) {
         if (component.children[component.renderedChildren[key].index] && component.children[component.renderedChildren[key].index].key !== key) {
-          component.renderedChildren[key].node.remove()
+          component.renderedChildren[key].node!.remove()
           delete component.nodeChildren[component.renderedChildren[key].index]
           delete component.renderedChildren[key]
         }
@@ -124,12 +134,12 @@ export const render = (input) => {
       }
   
       for (const [name, callback] of component.listeners.active) {
-        component.node.removeEventListener(name, callback)
+        component.node!.removeEventListener(name, callback)
       }
   
       if (component.listeners.special.onUnmount) component.listeners.special.onUnmount.bind(component.node)()
   
-      component.node.remove()
+      component.node!.remove()
     },
   }
 

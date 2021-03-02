@@ -1,4 +1,4 @@
-export const template = (html) => {
+export const template = (html: string) => {
   const template = document.createElement('template')
 
   template.innerHTML = html

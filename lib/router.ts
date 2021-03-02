@@ -1,8 +1,12 @@
+import { Component, Route, RouterOptions } from '../@types/index.js'
 import { mount } from './mount.js'
 
-let mode, testRoutes
+let mode: "hash" | "history"
+let testRoutes: () => Promise<void>
 
-export const goto = (url) => {
+import("./mount")
+
+export const goto = (url: string) => {
   if (mode === 'hash') {
     if (url.startsWith('/')) window.location.hash = url
     else location.hash += (/\/$/.test(location.hash) ? '' : '/') + url
@@ -12,15 +16,15 @@ export const goto = (url) => {
   }
 }
 
-export const router = async (root, routes, options = {}) => {
+export const router = async (root: HTMLElement, routes: Route[], options: RouterOptions = {}) => {
   if (root === undefined) throw Error('No root element provided.')
-  if (!root instanceof HTMLElement) throw Error('Invalid root element.')
+  if (!(root instanceof HTMLElement)) throw Error('Invalid root element.')
   if (routes === undefined) throw Error('No routes provided.')
   if (!Array.isArray(routes)) throw Error('Routes must be an array.')
 
-  mode = options.mode
+  mode = options.mode || "history"
 
-  let currentRenderedComponent
+  let currentRenderedComponent: Component
 
   testRoutes = async () => {
     for (const route of routes) {
@@ -54,7 +58,7 @@ export const router = async (root, routes, options = {}) => {
           route.renderedComponent = mount(root, asyncComponent)
         }
 
-        currentRenderedComponent = route.renderedComponent
+        currentRenderedComponent = route.renderedComponent!
 
         return
       }
@@ -66,14 +70,7 @@ export const router = async (root, routes, options = {}) => {
   if (options.mode === 'hash') {
     window.addEventListener('hashchange', testRoutes)
   } else {
-    window.addEventListener('pushstate', event => {
-      testRoutes()
-      console.log(event)
-    })
-
-    window.addEventListener('popstate', event => {
-      testRoutes()
-      console.log(event)
-    })
+    window.addEventListener('pushstate', testRoutes)
+    window.addEventListener('popstate', testRoutes)
   }
 }

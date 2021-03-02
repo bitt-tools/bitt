@@ -1,4 +1,4 @@
-export { normalizeComponent } from './lib/normalize.js'
+export { normalizeComponent } from './lib/normalize'
 export { hookProps } from './lib/props.js'
 export { render } from './lib/render.js'
 export { mount } from './lib/mount.js'
