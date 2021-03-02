@@ -1,6 +1,6 @@
-import { Component } from "../@types"
+import { RenderedComponent } from "../@types"
 
-export const hookProps = (component: Component) => {
+export const hookProps = (component: RenderedComponent) => {
   if (!(component.node instanceof HTMLElement)) return;
 
   for (const key in component.props) {

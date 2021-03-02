@@ -1,12 +1,12 @@
-import { ComponentInput, LinkOptions } from '../@types/index.js'
+import { Component, LinkOptions } from '../@types/index.js'
 import { goto } from '../lib/router.js'
 
-export const link = (options: LinkOptions | string, children: ComponentInput[]) => {
+export const link = (options: LinkOptions | string, children: Component[]) => {
   const attributes: LinkOptions =  typeof options === 'string' 
     ? { href: options } 
     : options
 
-  const input: ComponentInput = ['a', {
+  const input: Component = ['a', {
     ...attributes,
 
     onClick (event) {

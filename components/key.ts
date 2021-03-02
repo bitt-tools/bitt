@@ -1,6 +1,6 @@
-import { ComponentInput, KeyedComponentInput } from "../@types";
+import { Component, KeyedComponent } from "../@types";
 
 export const key = (
   key: string | number, 
-  input: ComponentInput,
-): KeyedComponentInput => ({ key, input })
+  input: Component,
+): KeyedComponent => ({ key, input })

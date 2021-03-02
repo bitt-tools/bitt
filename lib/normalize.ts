@@ -1,9 +1,9 @@
-import { Component, ComponentInput, KeyedComponentInput } from "../@types"
+import { RenderedComponent, Component, KeyedComponent } from "../@types"
 
 /**
  * Flatten nested components for multiple top level inputs.
  */
-const flattenChildren = (children: ComponentInput[]): ComponentInput[] => {
+const flattenChildren = (children: Component[]): Component[] => {
   return children.reduce((accumulator, child) => {
     if (Array.isArray(child) && Array.isArray(child[0])) {
       accumulator.push(...child[0])
@@ -12,13 +12,13 @@ const flattenChildren = (children: ComponentInput[]): ComponentInput[] => {
     }
 
     return accumulator
-  }, [] as ComponentInput[])
+  }, [] as Component[])
 }
 
 /**
  * Check if the input can be turned into a text node.
  */
-export const canStringify = (input: ComponentInput): boolean => (
+export const canStringify = (input: Component): boolean => (
   typeof input === 'string' ||
   typeof input === 'number' ||
   typeof input === 'boolean'
@@ -27,7 +27,7 @@ export const canStringify = (input: ComponentInput): boolean => (
 /**
  * Take varied component inputs and props, and manipulate them to standardize.
  */
-export const normalizeComponent = (component: Component): {
+export const normalizeComponent = (component: RenderedComponent): {
   text: string | boolean | number | undefined
 } => {
   if (
@@ -48,7 +48,7 @@ export const normalizeComponent = (component: Component): {
 
   component.props = !Array.isArray(input[1]) && typeof input[1] === 'object' ? input[1] : {}
 
-  let children: ComponentInput[] = []
+  let children: Component[] = []
 
   if (Array.isArray(input[1])) { 
     // ["div", [["p", "hello world"]]]
@@ -60,23 +60,23 @@ export const normalizeComponent = (component: Component): {
     children = input[2] 
   } 
   
-  else if (canStringify(input[1] as ComponentInput)) {
+  else if (canStringify(input[1] as Component)) {
     // ["div", "hello world"]
-    children = [input[1] as ComponentInput] 
+    children = [input[1] as Component] 
   } 
   
-  else if (canStringify(input[2] as ComponentInput)) {
+  else if (canStringify(input[2] as Component)) {
     // ["div", { style: { color: "red" } }, "hello world"]
-    children = [input[2] as ComponentInput] 
+    children = [input[2] as Component] 
   }
 
-  const keyedChildren: KeyedComponentInput[] = []
+  const keyedChildren: KeyedComponent[] = []
 
   const flattenedChildren = flattenChildren(children)
 
   for (const index in flattenedChildren) {
-    const child: KeyedComponentInput = typeof flattenedChildren[index] === "object" && !Array.isArray(flattenedChildren[index]) 
-      ? flattenedChildren[index] as KeyedComponentInput
+    const child: KeyedComponent = typeof flattenedChildren[index] === "object" && !Array.isArray(flattenedChildren[index]) 
+      ? flattenedChildren[index] as KeyedComponent
       : {
           key: undefined,
           input: flattenedChildren[index],

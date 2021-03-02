@@ -3,25 +3,25 @@ export type ComponentProps = {
   [attributeOrEventName: string]: ((event: Event) => any) | string | number | boolean | Record<string, unknown> | undefined
 }
 
-export interface KeyedComponentInput {
+export interface KeyedComponent {
   key: string | number | undefined
-  input: ComponentInput
+  input: Component
   index?: number | string
 }
 
-export type ComponentInput = 
+export type Component = 
   | string 
   | number 
   | boolean 
-  | ((component: Component) => ComponentInput) 
-  | KeyedComponentInput
+  | ((component: RenderedComponent) => Component) 
+  | KeyedComponent
   | [string]
-  | [string, ComponentInput[] | string | number | boolean]
+  | [string, Component[] | string | number | boolean]
   | [string, ComponentProps]
-  | [string, ComponentProps, ComponentInput[] | string | number | boolean]
+  | [string, ComponentProps, Component[] | string | number | boolean]
 
-export interface Component <State extends Record<string, unknown> = {}> {
-  input: ComponentInput
+export interface RenderedComponent <State extends Record<string, unknown> = {}> {
+  input: Component
 
   tagName?: string
   key?: string | number
@@ -29,9 +29,9 @@ export interface Component <State extends Record<string, unknown> = {}> {
   props: ComponentProps
   cachedProps: ComponentProps
   
-  children: KeyedComponentInput[]
-  renderedChildren: Component[],
-  nodeChildren: Component[],
+  children: KeyedComponent[]
+  renderedChildren: RenderedComponent[],
+  nodeChildren: RenderedComponent[],
   
   index: number,
 
@@ -53,4 +53,4 @@ export interface Component <State extends Record<string, unknown> = {}> {
   unmount (): void
 }
 
-export type RenderResult = Component | RenderResult[]
+export type RenderResult = RenderedComponent | RenderResult[]

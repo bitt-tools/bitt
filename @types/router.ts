@@ -1,4 +1,4 @@
-import { Component, ComponentInput } from "./component";
+import { RenderedComponent, Component } from "./component";
 
 export interface RouterOptions {
   mode?: "hash" | "history"
@@ -10,7 +10,7 @@ export interface LinkOptions {
 
 export interface Route {
   regex: RegExp
-  module?: () => Promise<{ default: ComponentInput }>
-  component?: ComponentInput
-  renderedComponent?: Component
+  module?: () => Promise<{ default: Component }>
+  component?: Component
+  renderedComponent?: RenderedComponent
 }

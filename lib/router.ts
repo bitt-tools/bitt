@@ -1,4 +1,4 @@
-import { Component, Route, RouterOptions } from '../@types/index.js'
+import { RenderedComponent, Route, RouterOptions } from '../@types/index.js'
 import { mount } from './mount.js'
 
 let mode: "hash" | "history"
@@ -24,7 +24,7 @@ export const router = async (root: HTMLElement, routes: Route[], options: Router
 
   mode = options.mode || "history"
 
-  let currentRenderedComponent: Component
+  let currentRenderedComponent: RenderedComponent
 
   testRoutes = async () => {
     for (const route of routes) {

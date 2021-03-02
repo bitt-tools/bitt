@@ -1,13 +1,13 @@
 import { normalizeComponent } from './normalize.js'
 import { hookProps } from './props.js'
-import { Component, ComponentInput, RenderResult } from '../@types'
+import { RenderedComponent, Component, RenderResult } from '../@types'
 
-export const render = (input: ComponentInput): RenderResult => {
+export const render = (input: Component): RenderResult => {
   if (input === undefined) throw Error('No component provided.')
   
   if (Array.isArray(input) && Array.isArray(input[0])) return input[0].map(render)
 
-  const component: Component = {
+  const component: RenderedComponent = {
     input,
 
     tagName: undefined,
@@ -87,8 +87,8 @@ export const render = (input: ComponentInput): RenderResult => {
         const key = _key as number
 
         if (component.renderedChildren[key] === undefined) {
-          // TODO: ensure the renderedChild is of type Component
-          const renderedChild = render(input) as Component
+          // TODO: ensure the renderedChild is of type RenderedComponent
+          const renderedChild = render(input) as RenderedComponent
           renderedChild.index = index
 
           component.renderedChildren[key] = renderedChild
